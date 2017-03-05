@@ -1,0 +1,7 @@
+userid businessid stars - Recommendation system - recommending new business locations based on location.
+
+lets business know how well is their reputation among users using reviews sentiment analysis along with different rating consideration
+
+which type of business categories are popular among users and which are not
+
+detecting users which are using inappropriate material in their reviews
