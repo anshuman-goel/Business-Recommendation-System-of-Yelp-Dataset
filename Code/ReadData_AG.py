@@ -32,4 +32,11 @@ review=pd.DataFrame.from_csv("../../Data/review.csv")
 #business.drop(business.columns[[0,4,5,6,7,8,9,10]],inplace=True,axis=1)
 #print(review)
 
-business.merge(review,on='business_id',how='inner').to_csv("../../Data/merged_BR.csv")
+br=business.merge(review,on='business_id',how='inner')
+for i in range(br.shape[0]):
+    if br.loc[i,'stars']>=3:
+        br.loc[i,'stars']=br.loc[i,'stars']+(0.1*br.loc[i,'funny']+.6*br.loc[i,'useful']+0.3*br.loc[i,'cool'])/(br.loc[i,'funny']+br.loc[i,'useful']+br.loc[i,'cool']+1)
+    else:
+        br.loc[i,'stars']=br.loc[i,'stars']-(0.1*br.loc[i,'funny']+.6*br.loc[i,'useful']+0.3*br.loc[i,'cool'])/(br.loc[i,'funny']+br.loc[i,'useful']+br.loc[i,'cool']+1)
+#br['stars']=[br['stars']+(0.1*br['funny']+.6*br['useful']+0.3*br['cool'])/(br['funny']+br['useful']+br['cool']+1) if br['stars']>=3 else br['stars']-(0.1*br['funny']+.6*br['useful']+0.3*br['cool'])/(br['funny']+br['useful']+br['cool']+1) for x in df['stars']]
+br.to_csv("../../Data/merged_BR2.csv")
