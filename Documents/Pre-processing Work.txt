@@ -1,0 +1,15 @@
+1. Converting all files from json to csv for easier reading and utlizing the existing resources. [ref: https://github.com/Yelp/dataset-examples]
+
+2. Loading business data. Dropping variables ['type','postal_code','latitude','longitude','review_count','attributes','address','is_open','hours','stars']
+
+3. Filtered data to contain only state 'NC'
+
+4. Loading review data. keeping only business id, user id, stars, funny, cool, and useful votes.
+
+5. Merging both datasets by business id.
+
+6. Updating value of the rating 'stars' by the formula (definiately it includes bias):
+if stars>=3
+        stars=stars+(0.1*funny+.6*useful+0.3*cool)/(funny+useful+cool+1)
+else
+        stars=stars-(0.1*funny+.6*useful+0.3*cool)/(funny+useful+cool+1)

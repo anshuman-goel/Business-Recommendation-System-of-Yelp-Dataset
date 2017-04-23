@@ -33,10 +33,26 @@ review=pd.DataFrame.from_csv("../../Data/review.csv")
 #print(review)
 
 br=business.merge(review,on='business_id',how='inner')
+user_mapping = {}
+user_mapping_code = 0
+business_mapping = {}
+business_mapping_code = 0
 for i in range(br.shape[0]):
     if br.loc[i,'stars']>=3:
-        br.loc[i,'stars']=br.loc[i,'stars']+(0.1*br.loc[i,'funny']+.6*br.loc[i,'useful']+0.3*br.loc[i,'cool'])/(br.loc[i,'funny']+br.loc[i,'useful']+br.loc[i,'cool']+1)
+        br.loc[i,'stars_m']=br.loc[i,'stars']+(0.1*br.loc[i,'funny']+.6*br.loc[i,'useful']+0.3*br.loc[i,'cool'])/(br.loc[i,'funny']+br.loc[i,'useful']+br.loc[i,'cool']+1)
     else:
-        br.loc[i,'stars']=br.loc[i,'stars']-(0.1*br.loc[i,'funny']+.6*br.loc[i,'useful']+0.3*br.loc[i,'cool'])/(br.loc[i,'funny']+br.loc[i,'useful']+br.loc[i,'cool']+1)
+        br.loc[i,'stars_m']=br.loc[i,'stars']-(0.1*br.loc[i,'funny']+.6*br.loc[i,'useful']+0.3*br.loc[i,'cool'])/(br.loc[i,'funny']+br.loc[i,'useful']+br.loc[i,'cool']+1)
 #br['stars']=[br['stars']+(0.1*br['funny']+.6*br['useful']+0.3*br['cool'])/(br['funny']+br['useful']+br['cool']+1) if br['stars']>=3 else br['stars']-(0.1*br['funny']+.6*br['useful']+0.3*br['cool'])/(br['funny']+br['useful']+br['cool']+1) for x in df['stars']]
-br.to_csv("../../Data/merged_BR2.csv")
+    user_name=br.loc[i,'user_id']
+    if(user_name not in user_mapping.keys()):
+        user_mapping_code += 1
+        user_mapping[user_name] = user_mapping_code
+    br.loc[i,'user_code'] = user_mapping[user_name]
+
+    business_name = br.loc[i,'business_id']
+    if(business_name not in business_mapping.keys()):
+        business_mapping_code += 1
+        business_mapping[business_name] = business_mapping_code
+    br.loc[i,'business_code'] = business_mapping[business_name]
+
+br.to_csv("../../Data/merged_BR3.csv")
